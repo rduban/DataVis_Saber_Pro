@@ -1,11 +1,17 @@
 # Imagen base optimizada para R
 FROM rocker/r-ver:4.3.2
 
-# Reemplazar el repositorio por defecto por el mirror de US para evitar bloqueos
+# 1. Reemplazar el repositorio por defecto por el mirror de US para evitar bloqueos
 RUN sed -i 's/archive.ubuntu.com/us.archive.ubuntu.com/g' /etc/apt/sources.list \
     && sed -i 's/security.ubuntu.com/us.archive.ubuntu.com/g' /etc/apt/sources.list
 
-# Instalar dependencias del sistema operativo requeridas para compilar/ejecutar los paquetes de R
+# 1. Rewrite apt sources to HTTPS to bypass campus HTTP (port 80) blocking
+RUN sed -i \
+    -e 's|http://archive.ubuntu.com/ubuntu|https://us.archive.ubuntu.com/ubuntu|g' \
+    -e 's|http://security.ubuntu.com/ubuntu|https://us.archive.ubuntu.com/ubuntu|g' \
+    /etc/apt/sources.list
+
+# 2. Instalar dependencias del sistema operativo
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libcurl4-openssl-dev \
     libssl-dev \
@@ -19,24 +25,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar remotes, luego la versión exacta de duckdb (1.5.2), y finalmente el resto de paquetes
-RUN Rscript -e "install.packages('remotes')" && \
-    Rscript -e "remotes::install_version('duckdb', version = '1.5.2', repos = 'http://cran.us.r-project.org')" && \
-    Rscript -e "install.packages(c( \
-    'shiny', \
-    'shinydashboard', \
-    'shinyWidgets', \
-    'plotly', \
-    'DT', \
-    'ggplot2', \
-    'bslib', \
-    'scales', \
-    'DBI', \
-    'glue', \
-    'dplyr', \
-    'stringdist', \
-    'tidyr' \
-))"
+# Install all R packages including duckdb at the pinned version
+RUN Rscript -e " \
+    install.packages('remotes', repos = 'https://cloud.r-project.org'); \
+    remotes::install_version( \
+        'duckdb', \
+        version = '1.5.2', \
+        repos = 'https://cloud.r-project.org', \
+        upgrade = 'never' \
+    ); \
+    install.packages(c( \
+        'shiny', \
+        'shinydashboard', \
+        'shinyWidgets', \
+        'plotly', \
+        'DT', \
+        'ggplot2', \
+        'bslib', \
+        'scales', \
+        'DBI', \
+        'glue', \
+        'dplyr', \
+        'stringdist', \
+        'tidyr' \
+    ), repos = 'https://cloud.r-project.org'); \
+    "
 
 # Configurar el directorio de trabajo interno
 RUN mkdir -p /app
