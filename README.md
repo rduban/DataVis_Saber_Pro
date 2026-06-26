@@ -15,8 +15,8 @@ Tener Docker instalado en tu máquina.
 Clonar este repositorio:
 
 ```
-git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
-cd tu-repositorio
+git clone [https://github.com/rduban/DataVis_Saber_Pro](https://github.com/rduban/DataVis_Saber_Pro)
+cd DataVis_Saber_Pro
 ```
 
 (Asegúrate de que los archivos app.R, Dockerfile y icfes.duckdb se encuentren en la raíz de la carpeta).
