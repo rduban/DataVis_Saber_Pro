@@ -14,7 +14,7 @@ Tener Docker instalado en tu máquina.
 
 Clonar este repositorio:
 
-```
+```sh
 git clone https://github.com/rduban/DataVis_Saber_Pro
 cd DataVis_Saber_Pro
 ```
@@ -25,7 +25,7 @@ cd DataVis_Saber_Pro
 
 Abre tu terminal en la ruta del proyecto y ejecuta el siguiente comando para construir la imagen. Este proceso instalará las librerías necesarias de R.
 
-```
+```sh
 docker build -t icfes-analytics-app .
 ```
 
@@ -33,7 +33,7 @@ docker build -t icfes-analytics-app .
 
 Una vez finalizada la construcción, levanta el contenedor mapeando el puerto 3838:
 
-```
+```sh
 docker run -d -p 3838:3838 --name icfes-app icfes-analytics-app
 ```
 
@@ -42,17 +42,23 @@ docker run -d -p 3838:3838 --name icfes-app icfes-analytics-app
 Abre tu navegador web preferido e ingresa a la siguiente dirección:
 👉 http://localhost:3838
 
+5. Visualización de errores
+
+Ante cualquier eventualidad, los logs de error se pueden visualizar en:
+
+```sh
+docker logs icfes-app
+```
+
 🗺️ Roadmap
 
 El proyecto está en constante evolución. Aquí hay un vistazo de hacia dónde nos dirigimos en futuras actualizaciones:
-
-[ ] Filtros socioeconómicos: Añadir variables demográficas (estrato, ingresos familiares, género) para un análisis más profundo de las brechas de aprendizaje.
 
 [ ] Módulo de predicción: Implementar modelos de regresión simples para estimar puntajes esperados basados en tendencias históricas.
 
 [ ] Exportación de reportes: Habilitar un botón para descargar gráficos en alta calidad y reportes tabulares en formato PDF o Excel.
 
-[ ] Automatización de ETL: Crear scripts en R/Python para actualizar la base de datos icfes.duckdb automáticamente cuando el gobierno publique nuevos resultados.
+[ ] Automatización de ETL: Actualizar la base de datos icfes.duckdb con datos de años adicionales.
 
 📄 Licencia
 
