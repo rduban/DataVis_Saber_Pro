@@ -15,7 +15,7 @@ Tener Docker instalado en tu máquina.
 Clonar este repositorio:
 
 ```
-git clone [https://github.com/rduban/DataVis_Saber_Pro](https://github.com/rduban/DataVis_Saber_Pro)
+git clone https://github.com/rduban/DataVis_Saber_Pro
 cd DataVis_Saber_Pro
 ```
 
